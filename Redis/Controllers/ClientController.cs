@@ -39,9 +39,15 @@ namespace Redis.Controllers
                     return NotFound();
                 }
 
+                var cacheOptions = new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
+                };
+
                 await _distributedCache.SetStringAsync(
                     key,
                     JsonConvert.SerializeObject(client),
+                    cacheOptions,
                     cancellationToken);
 
                 return Ok(client);
